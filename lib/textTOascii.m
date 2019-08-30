@@ -16,14 +16,3 @@ function img = textTOascii(text)
         endfor
     endfor
 endfunction
-
-
-%def rotate(img,angle):
-%
-%
-%def otsuThreshold(img):
-%
-%
-%def kapurThreshold(img):
-
-
