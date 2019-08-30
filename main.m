@@ -9,5 +9,7 @@ addpath('./lib');
 # READING AND PROCESSING TEXT IMAGE
 textImg = fileread('charact1.txt');
 img = textTOascii(textImg);
-imwrite(img,'test.png');
+%imwrite(img,'test.png');
+imgStretch = stretchContrast(img);
+imwrite(imgStretch, 'test2.png');
 %imshow(img);

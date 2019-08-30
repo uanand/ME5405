@@ -1,4 +1,5 @@
 function img = textTOascii(text)
+    printf("Converting text image to its corresponding ASCII codes")
     [~,numElements] = size(text);
     listImg = [];
     for c = 1:numElements
