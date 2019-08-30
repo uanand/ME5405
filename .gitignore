@@ -1,2 +1,9 @@
 # Don't track content of these folders
 LectureNotes/
+
+# Compiled source
+
+# Miscellaneous files
+octave-workspace
+test.png
+test2.png
