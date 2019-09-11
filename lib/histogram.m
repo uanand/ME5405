@@ -1,5 +1,5 @@
 function count = histogram(img,normalize=0)
-    printf("Calculating the histogram of image");
+    printf("Calculating the histogram of image\n");
     [row,col] = size(img);
     count = zeros(1,256);
     for r = 1:row;
