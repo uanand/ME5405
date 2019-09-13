@@ -1,8 +1,7 @@
 function [bImg,th] = threshold(img,method="mean",th=0)
-    printf("Binarizing the image based on the selected threshold method\n")
+    printf("Binarizing the image based on the selected threshold method\n");
     [row,col] = size(img);
     bImg = zeros(row,col,"uint8");
-    strcmp(method,"mean")
     
     if (strcmp(method,"constant"))
         for r = 1:row;
@@ -13,10 +12,12 @@ function [bImg,th] = threshold(img,method="mean",th=0)
             endfor;
         endfor;
     elseif (strcmp(method,"mean"))
-        th = 0
+        th = 0;
         for r = 1:row;
             for c = 1:col;
-                th = th+img(r,c)
+                th = th+double(img(r,c));
+            endfor
+        endfor
         th = double(th/(row*col))
         for r = 1:row;
             for c = 1:col;
@@ -26,12 +27,7 @@ function [bImg,th] = threshold(img,method="mean",th=0)
             endfor;
         endfor;
     elseif (strcmp(method,"median"))
-        vectorImg = zeros(row*col)
-        for r = 1:row
-            for c = 1:col
-                vectorImg((r-1)*col+c) = img(r,c)
-            endfor
-        endfor
+        vectorImg = reshape(img,1,row*col);
         th = median(vectorImg)
         for r = 1:row
             for c = 1:col
@@ -40,11 +36,11 @@ function [bImg,th] = threshold(img,method="mean",th=0)
                 endif;
             endfor;
         endfor;
-    %elseif (strcmp(method,"otsu"))
-        %do someting
-    %elseif (strcmp(method,"maxentropy"))
-        %do something;
-    else
-        printf("The method you entered is not valid. Please choose 1 of the following - constant, mean, median, otsu, maxentropy\n")
+    %%%elseif (strcmp(method,"otsu"))
+        %%%do someting
+    %%%elseif (strcmp(method,"maxentropy"))
+        %%%do something;
+    %%else
+        %%printf("The method you entered is not valid. Please choose 1 of the following - constant, mean, median, otsu, maxentropy\n")
     endif
 endfunction
