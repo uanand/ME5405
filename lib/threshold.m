@@ -79,11 +79,41 @@ function [bImg,th] = threshold(img,method="mean",th=0)
                 endif;
             endfor;
         endfor;
-        
-        
-    %%%elseif (strcmp(method,"maxentropy"))
-        %%%do something;
-    %%else
-        %%printf("The method you entered is not valid. Please choose 1 of the following - constant, mean, median, otsu, maxentropy\n")
+    elseif (strcmp(method,"maxentropy"))
+        entropy = -1e10;
+        prob = histogram(img,normalize=1);
+        P_s = zeros(256);
+        H_s = zeros(256);
+        phi_s = zeros(256);
+        H_n = 0;
+        for s = 0:255
+            if (prob(s+1)>0)
+                H_n = H_n-prob(s+1)*log(prob(s+1));
+            endif
+        endfor
+        for s = 0:255
+            for i = 0:s
+                if (prob(i+1)>0)
+                    P_s(s+1) = P_s(s+1)+prob(i+1);
+                    H_s(s+1) = H_s(s+1)-prob(i+1)*log(prob(i+1));
+                endif
+            endfor
+            if (P_s(s+1)>0 && P_s(s+1)<1)
+                phi_s = log(P_s(s+1)*(1-P_s(s+1))) + H_s(s+1)/P_s(s+1) + (H_n-H_s(s+1))/(1-P_s(s+1));
+                if (phi_s>entropy)
+                    th = s;
+                    entropy = phi_s;
+                endif
+            endif
+        endfor
+        for r = 1:row
+            for c = 1:col
+                if (img(r,c)>th)
+                    bImg(r,c) = 1;
+                endif;
+            endfor;
+        endfor;
+    else
+        printf("The method you entered is not valid. Please choose 1 of the following - constant, mean, median, otsu, maxentropy\n")
     endif
 endfunction
