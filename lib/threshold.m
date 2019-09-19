@@ -40,32 +40,32 @@ function [bImg,th] = threshold(img,method="mean",th=0)
         classVariance = 1e10;
         hist = histogram(img);
         for intensity = 0:255
-            weightLower = 0;
-            meanLower = 0;
-            meanLower2 = 0;
-            weightUpper = 0;
-            meanUpper = 0;
-            meanUpper2 = 0;
-            for iLower = 0:intensity
-                weightLower = weightLower + hist(iLower+1);
-                meanLower = meanLower + iLower*hist(iLower+1);
-                meanLower2 = meanLower2 + iLower^2*hist(iLower+1);
+            w1 = 0;
+            m1 = 0;
+            m1_2 = 0;
+            w2 = 0;
+            m2 = 0;
+            m2_2 = 0;
+            for i1 = 0:intensity
+                w1 = w1 + hist(i1+1);
+                m1 = m1 + i1*hist(i1+1);
+                m1_2 = m1_2 + i1^2*hist(i1+1);
             endfor
-            for iUpper = intensity+1:255
-                weightUpper = weightUpper + hist(iUpper+1);
-                meanUpper = meanUpper + iUpper*hist(iUpper+1);
-                meanUpper2 = meanUpper2 + iUpper^2*hist(iUpper+1);
+            for i2 = intensity+1:255
+                w2 = w2 + hist(i2+1);
+                m2 = m2 + i2*hist(i2+1);
+                m2_2 = m2_2 + i2^2*hist(i2+1);
             endfor
-            if (weightLower>0 && weightUpper>0)
-                meanLower = meanLower/weightLower;
-                meanLower2 = meanLower2/weightLower;
-                varLower = meanLower2-meanLower^2;
-                weightLower = weightLower/double(row*col);
-                meanUpper = meanUpper/weightUpper;
-                meanUpper2 = meanUpper2/weightUpper;
-                varUpper = meanUpper2-meanUpper^2;
-                weightUpper = weightUpper/double(row*col);
-                variance = weightLower*varLower + weightUpper*varUpper;
+            if (w1>0 && w2>0)
+                m1 = m1/w1;
+                m1_2 = m1_2/w1;
+                var1 = m1_2-m1^2;
+                w1 = w1/double(row*col);
+                m2 = m2/w2;
+                m2_2 = m2_2/w2;
+                var2 = m2_2-m2^2;
+                w2 = w2/double(row*col);
+                variance = w1*var1 + w2*var2;
                 if (variance<classVariance)
                     classVariance = variance;
                     th = intensity;
