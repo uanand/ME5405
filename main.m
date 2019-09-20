@@ -28,9 +28,11 @@ addpath('./lib');
 # READING AND PROCESSING TEXT IMAGE
 textImg = fileread('charact1.txt');
 img = textTOascii(textImg);
+%bImg,th = threshold(img,method='mean')
+%bImgBoundary = boundary(bImg)
 %rotImg1 = imageRotate(img,angle=30,point=[20,50],method='nearestNeighbor');
 %rotImg2 = imageRotate(img,angle=30,point=[1,1],method='nearestNeighbor');
-rotImg3 = imageRotate(img,angle=30,point='centre',method='bilinear');
+rotImg3 = imageRotate(img,angle=35,point='centre',method='bilinear');
 %scaleImg1 = imageScale(img,targetRow=100,targetCol=150,method='nearestNeighbor');
 %scaleImg2 = imageScale(img,targetRow=100,targetCol=150,method='bilinear');
 %scaleImg3 = imageScale(img,targetRow=100,targetCol=150,method='bicubic');
