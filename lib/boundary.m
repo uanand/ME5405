@@ -1,9 +1,22 @@
-function bImg = boundary(bImg)
-    printf("Finding the boundary of binary image\n")
-    [row,col] = size(img)
-    padImg = [img(1,:);img];
-    padImg = [padImg(:,1) padImg];
-    padImg = [padImg;padImg(row+1,:)];
-    padImg = [padImg padImg(:,col+1)];
-    
+function bImgBdry = boundary(bImg)
+    printf("Finding the boundary of binary image\n");
+    [row,col] = size(bImg);
+    bImgErode = zeros(row,col,'logical');
+    bImgBdry = zeros(row,col,'logical');
+    for r = 2:row-1
+        for c = 2:col-1
+            %product = bImg(r-1,c-1)*bImg(r-1,c)*bImg(r-1,c+1)*bImg(r,c-1)*bImg(r,c)*bImg(r,c+1)*bImg(r+1,c-1)*bImg(r+1,c)*bImg(r+1,c+1);
+            product = bImg(r-1,c)*bImg(r,c-1)*bImg(r,c)*bImg(r,c+1)*bImg(r+1,c);
+            if (product == 1)
+                bImgErode(r,c) = 1;
+            endif
+        endfor
+    endfor
+    for r = 1:row
+        for c = 1:col
+            if (bImg(r,c)==1 && bImgErode(r,c)==0)
+                bImgBdry(r,c) = 1;
+            endif
+        endfor
+    endfor
 endfunction
