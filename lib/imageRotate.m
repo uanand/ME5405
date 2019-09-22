@@ -1,7 +1,5 @@
 function rotImg = imageRotate(img,theta,point='centre',method='nearestNeighbor')
     printf("Rotating the image\n")
-    point
-    method
     [row,col] = size(img);
     theta = theta*pi/180;
     if (strcmp(point,'centre'))
