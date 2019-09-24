@@ -5,7 +5,6 @@ function bImgBdry = boundary(bImg)
     bImgBdry = zeros(row,col,'logical');
     for r = 2:row-1
         for c = 2:col-1
-            %product = bImg(r-1,c-1)*bImg(r-1,c)*bImg(r-1,c+1)*bImg(r,c-1)*bImg(r,c)*bImg(r,c+1)*bImg(r+1,c-1)*bImg(r+1,c)*bImg(r+1,c+1);
             product = bImg(r-1,c)*bImg(r,c-1)*bImg(r,c)*bImg(r,c+1)*bImg(r+1,c);
             if (product == 1)
                 bImgErode(r,c) = 1;
