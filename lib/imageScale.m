@@ -1,9 +1,8 @@
 function scaleImg = imageScale(img,targetRow,targetCol,method='nearestNeighbor')
-    printf("Image scaling using the selected method\n");
     [row,col] = size(img);
     scaleImg = zeros(targetRow,targetCol,"uint8");
     
-    scaleMat = [targetRow/row,0;0,targetCol/col];
+    scaleMat = [double(targetRow)/double(row),0;0,double(targetCol)/double(col)];
     invScaleMat = inv(scaleMat);
     
     if (strcmp(method,'nearestNeighbor'))
@@ -58,12 +57,9 @@ endfunction
 
 function w = weight_h3(x,y)
     d = abs(x-y);
-    %a = 0.5;
     if (d<=1)
-        %w = (a+2)*d^3 - (a+3)*d^2 + 1;
         w = 1 - 2*d^2 + d^3;
     elseif (d>1 && d<2)
-        %w = a*d^3 - 5*a*d^2 + 8*a*d -4*a;
         w = 4 - 8*d + 5*d^2 - d^3;
     else
         w = 0;
