@@ -1,18 +1,12 @@
-function rotImg = imageRotate(img,theta,point='centre',method='nearestNeighbor')
-    printf("Rotating the image\n")
+function rotImg = imageRotate(img,theta,method='nearestNeighbor')
     [row,col] = size(img);
     theta = theta*pi/180;
-    if (strcmp(point,'centre'))
-        r0 = int32(row/2); c0 = int32(col/2);
-    else
-        r0 = int32(point(1)); c0 = int32(point(2));
-    endif
     
     rRotMin=row; rRotMax=0; cRotMin=col; cRotMax=0;
     for r = 1:row-1:row
         for c = 1:col-1:col
-            rRot = round(cos(theta)*double(r-r0) - sin(theta)*double(c-c0) + double(r0));
-            cRot = round(sin(theta)*double(r-r0) + cos(theta)*double(c-c0) + double(c0));
+            rRot = round(cos(theta)*double(r) - sin(theta)*double(c));
+            cRot = round(sin(theta)*double(r) + cos(theta)*double(c));
             if (rRot<rRotMin)
                 rRotMin = rRot;
             endif
@@ -43,8 +37,8 @@ function rotImg = imageRotate(img,theta,point='centre',method='nearestNeighbor')
     endif
     for rRot = rRotMin:rRotMax
         for cRot = cRotMin:cRotMax
-            r1 =  cos(theta)*double(rRot-r0) + sin(theta)*double(cRot-c0) + double(r0);
-            c1 = -sin(theta)*double(rRot-r0) + cos(theta)*double(cRot-c0) + double(c0);
+            r1 =  cos(theta)*double(rRot) + sin(theta)*double(cRot);
+            c1 = -sin(theta)*double(rRot) + cos(theta)*double(cRot);
             if (r1>=0.5 && r1<row+0.5 && c1>=0.5 && c1<col+0.5)
                 if (strcmp(method,'nearestNeighbor'))
                     rotImg(rRot-rRotMin+1,cRot-cRotMin+1) = padImg(round(r1),round(c1));
