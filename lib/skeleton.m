@@ -1,5 +1,4 @@
 function [bImgSkeleton] = skeleton(bImg)
-    printf('Finding out the skeleton for all the binary objects in image\n');
     [row,col] = size(bImg);
     skeletonImg0 = bImg; skeletonImg0(1,:) = 0; skeletonImg0(row,:) = 0; skeletonImg0(:,1) = 0; skeletonImg0(:,col) = 0;
     skeletonImg1 = skeletonImg0;

@@ -1,5 +1,4 @@
 function [imgEq,histEq] = histogramEqualize(img)
-    printf("Performing Histogram Equalization\n");
     [row,col] = size(img);
     imgEq = zeros(row,col,"uint8");
     H = zeros(1,256);

@@ -1,5 +1,4 @@
 function imgStretch = stretchContrast(img,min=0,max=255)
-    printf("Normalizing the contrast for image\n")
     [row,col] = size(img);
     intensityMin = 255; intensityMax = 0;
     for r = 1:row

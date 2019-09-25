@@ -1,5 +1,4 @@
 function bImgBdry = boundary(bImg)
-    printf("Finding the boundary of binary image\n");
     [row,col] = size(bImg);
     bImgErode = zeros(row,col,'logical');
     bImgBdry = zeros(row,col,'logical');

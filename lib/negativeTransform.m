@@ -1,5 +1,4 @@
 function img = negativeTransform(img)
-    printf("Inverting the input image\n");
     [row,col] = size(img);
     for r = 1:row
         for c = 1:col

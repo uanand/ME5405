@@ -1,5 +1,4 @@
 function [labelImg,numLabel] = label(bImg)
-    printf("Labeling particles based on 8-connectivity.\n");
     [row,col] = size(bImg);
     labelImg = zeros(row,col,"int32");
     numLabel = 0;
