@@ -1,5 +1,4 @@
 function [bImg,th] = threshold(img,method="mean",th=0)
-    printf("Binarizing the image based on the selected threshold method\n");
     [row,col] = size(img);
     bImg = zeros(row,col,"logical");
     
