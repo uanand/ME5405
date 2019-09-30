@@ -26,8 +26,8 @@ for label = 1:numLabel
     rotCropImg = imageRotate(cropImg,angle=-90,method='nearestNeighbor');
     [rowCrop,colCrop] = size(cropImg);
     [rowRotCrop,colRotCrop] = size(rotCropImg);
-    startRow = int32(props(label).BoundingBox(1) + props(label).Height/2 - rowRotCrop/2);
-    startCol = int32(props(label).BoundingBox(3) + props(label).Width/2 - colRotCrop/2);
+    startRow = int32(props(label).Centroid(1) - rowRotCrop/2);
+    startCol = int32(props(label).Centroid(2) - colRotCrop/2);
     newImg_rot_90(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1) = rotCropImg;
 endfor
 %DISPLAY IMAGES HERE
@@ -39,8 +39,8 @@ for label = 1:numLabel
     rotCropImg = imageRotate(cropImg,angle=35,method='nearestNeighbor');
     [rowCrop,colCrop] = size(cropImg);
     [rowRotCrop,colRotCrop] = size(rotCropImg);
-    startRow = int32(props(label).BoundingBox(1) + props(label).Height/2 - rowRotCrop/2);
-    startCol = int32(props(label).BoundingBox(3) + props(label).Width/2 - colRotCrop/2);
+    startRow = int32(props(label).Centroid(1) - rowRotCrop/2);
+    startCol = int32(props(label).Centroid(2) - colRotCrop/2);
     newImg_rot35(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1) = rotCropImg;
 endfor
 %DISPLAY IMAGES HERE
