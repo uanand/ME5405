@@ -22,12 +22,12 @@ props = regionProps(labelImg);
 % 4. ROTATE THE CHARACTERS ABOUT THEIR CENTER BY -90 DEGREES
 newImg_rot_90 = zeros(row,col,'uint8');
 for label = 1:numLabel
-    cropImg = imgStretch(props(label).BoundingBox(1):props(label).rMax,props(label).cMin:props(label).cMax);
+    cropImg = imgStretch(props(label).BoundingBox(1):props(label).BoundingBox(2),props(label).BoundingBox(3):props(label).BoundingBox(4));
     rotCropImg = imageRotate(cropImg,angle=-90,method='nearestNeighbor');
     [rowCrop,colCrop] = size(cropImg);
     [rowRotCrop,colRotCrop] = size(rotCropImg);
-    startRow = int32(props(label).BoundingBox(1) + (props(label).rMax-props(label).BoundingBox(1))/2 - rowRotCrop/2);
-    startCol = int32(props(label).cMin + (props(label).cMax-props(label).cMin)/2 - colRotCrop/2);
+    startRow = int32(props(label).BoundingBox(1) + props(label).Height/2 - rowRotCrop/2);
+    startCol = int32(props(label).BoundingBox(3) + props(label).Width/2 - colRotCrop/2);
     newImg_rot_90(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1) = rotCropImg;
 endfor
 %DISPLAY IMAGES HERE
@@ -35,12 +35,12 @@ endfor
 % 5. ROTATE THE CHARACTERS ABOUT THEIR CENTER BY 35 DEGREES
 newImg_rot35 = zeros(row,col,'uint8');
 for label = 1:numLabel
-    cropImg = imgStretch(props(label).BoundingBox(1):props(label).rMax,props(label).cMin:props(label).cMax);
-    rotCropImg = imageRotate(cropImg,angle=35,method='bilinear');
+    cropImg = imgStretch(props(label).BoundingBox(1):props(label).BoundingBox(2),props(label).BoundingBox(3):props(label).BoundingBox(4));
+    rotCropImg = imageRotate(cropImg,angle=35,method='nearestNeighbor');
     [rowCrop,colCrop] = size(cropImg);
     [rowRotCrop,colRotCrop] = size(rotCropImg);
-    startRow = int32(props(label)BoundingBox(1) + (props(label).rMax-props(label)BoundingBox(1))/2 - rowRotCrop/2);
-    startCol = int32(props(label).cMin + (props(label).cMax-props(label).cMin)/2 - colRotCrop/2);
+    startRow = int32(props(label).BoundingBox(1) + props(label).Height/2 - rowRotCrop/2);
+    startCol = int32(props(label).BoundingBox(3) + props(label).Width/2 - colRotCrop/2);
     newImg_rot35(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1) = rotCropImg;
 endfor
 %DISPLAY IMAGES HERE
@@ -56,14 +56,14 @@ bImgSkeleton = skeleton(bImg);
 % 8. SCALE AND DISPLAY CHARACTERS 1A2B3C IN SEQUENCE
 targetRow = 0;
 for label = 1:numLabel
-    if ((props(label).rMax-props(label)BoundingBox(1)+1)>targetRow)
-        targetRow = props(label).rMax-props(label)BoundingBox(1)+1;
+    if (props(label).Height>targetRow)
+        targetRow = props(label).Height;
     endif
 endfor
 finalImg = [];
 for label = {2,1,4,3,6,5}
-    cropImg = imgStretch(props(label{1})BoundingBox(1):props(label{1}).rMax,props(label{1}).cMin:props(label{1}).cMax);
-    targetCol = int32((props(label{1}).cMax-props(label{1}).cMin+1)*targetRow/(props(label{1}).rMax-props(label{1})BoundingBox(1)+1));
+    cropImg = imgStretch(props(label{1}).BoundingBox(1):props(label{1}).BoundingBox(2),props(label{1}).BoundingBox(3):props(label{1}).BoundingBox(4));
+    targetCol = int32(props(label{1}).Width * targetRow / props(label{1}).Height);
     cropImgScale = imageScale(cropImg,targetRow=targetRow,targetCol=targetCol,method='bilinear');
     finalImg = [finalImg cropImgScale];
 endfor
