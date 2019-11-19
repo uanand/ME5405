@@ -1,4 +1,20 @@
-function scaleImg = imageScale(img,targetRow,targetCol,method='nearestNeighbor')
+function scaleImg = imageScale(img,targetRow,targetCol,method)
+% imageScale - scale up or down the image by increasing or decreasing the number of rows and columns in the image.
+% 
+% Input parameters -
+%   img - 8-bit grayscale image which you need to scale up or down
+%   targetRow - number of rows you want in the final image. This corresponds to the height of the scaled image in pixels.
+%   targetCol - number of columns you want in the final image. This corresponds to the width of the scaled image in pixels.
+%   method - inerpolation method that you want to use for scaling up or down the images. Options are 'nearestNeighbor', and 'bilinear'
+% 
+% Usage -
+% scaleImg = imageScale(img,100,200,'nearestNeighbor')
+%   Let's assume that the input image is 512x512 pixels. This is an example of downscaling. The final scaled image will have 100 rows and 200 columns (100x200 pixels) and will be genereted using nearest neighbor interpolation method.
+% scaleImg = imageScale(img,637,512,'bilinear')
+%   Let's assume that the input image is 100x200 pixels. This is an example of upscaling. The final scaled image will have 637 rows and 512 columns (637x512 pixels) and will be genereted using bilinear interpolation method.
+%
+% Returns -
+%   Scaled image. The size of the scaled image is defined by the targetRow and targetCol input parameters.
     [row,col] = size(img);
     scaleImg = zeros(targetRow,targetCol,"uint8");
     
@@ -10,10 +26,7 @@ function scaleImg = imageScale(img,targetRow,targetCol,method='nearestNeighbor')
     elseif (strcmp(method,'bilinear'))
         padImg = double([img;img(row,:)]);
         padImg = [padImg padImg(:,col)];
-    elseif (strcmp(method,'bicubic'))
-        padImg = double([img(1,:);img;img(row,:);img(row-1,:)]);
-        padImg = [padImg(:,1) padImg padImg(:,col) padImg(:,col-1)];
-    endif
+    end
     for r = 1:targetRow
         for c = 1:targetCol
             r1 = max(1,invScaleMat(1,1)*r);
@@ -27,41 +40,7 @@ function scaleImg = imageScale(img,targetRow,targetCol,method='nearestNeighbor')
                 padImg(floor_r1+0,floor_c1+1)*(floor(r1)+1-r1)*(c1-floor(c1)+0) + ...
                 padImg(floor_r1+1,floor_c1+0)*(r1-floor(r1)+0)*(floor(c1)+1-c1) + ...
                 padImg(floor_r1+1,floor_c1+1)*(r1-floor(r1)+0)*(c1-floor(c1)+0));
-            elseif (strcmp(method,'bicubic'))
-                r1 = r1+1;
-                c1 = c1+1;
-                scaleImg(r,c) = round(...
-                padImg(floor(r1)-1,floor(c1)-1)*weight_h3(floor(r1)+2,r1)*weight_h3(floor(c1)+2,c1) + ...
-                padImg(floor(r1)-1,floor(c1)+0)*weight_h3(floor(r1)+2,r1)*weight_h3(floor(c1)+1,c1) + ...
-                padImg(floor(r1)-1,floor(c1)+1)*weight_h3(floor(r1)+2,r1)*weight_h3(floor(c1)+0,c1) + ...
-                padImg(floor(r1)-1,floor(c1)+2)*weight_h3(floor(r1)+2,r1)*weight_h3(floor(c1)-1,c1) + ...
-                ...
-                padImg(floor(r1)+0,floor(c1)-1)*weight_h3(floor(r1)+1,r1)*weight_h3(floor(c1)+2,c1) + ...
-                padImg(floor(r1)+0,floor(c1)+0)*weight_h3(floor(r1)+1,r1)*weight_h3(floor(c1)+1,c1) + ...
-                padImg(floor(r1)+0,floor(c1)+1)*weight_h3(floor(r1)+1,r1)*weight_h3(floor(c1)+0,c1) + ...
-                padImg(floor(r1)+0,floor(c1)+2)*weight_h3(floor(r1)+1,r1)*weight_h3(floor(c1)-1,c1) + ...
-                ...
-                padImg(floor(r1)+1,floor(c1)-1)*weight_h3(floor(r1)+0,r1)*weight_h3(floor(c1)+2,c1) + ...
-                padImg(floor(r1)+1,floor(c1)+0)*weight_h3(floor(r1)+0,r1)*weight_h3(floor(c1)+1,c1) + ...
-                padImg(floor(r1)+1,floor(c1)+1)*weight_h3(floor(r1)+0,r1)*weight_h3(floor(c1)+0,c1) + ...
-                padImg(floor(r1)+1,floor(c1)+2)*weight_h3(floor(r1)+0,r1)*weight_h3(floor(c1)-1,c1) + ...
-                ...
-                padImg(floor(r1)+2,floor(c1)-1)*weight_h3(floor(r1)-1,r1)*weight_h3(floor(c1)+2,c1) + ...
-                padImg(floor(r1)+2,floor(c1)+0)*weight_h3(floor(r1)-1,r1)*weight_h3(floor(c1)+1,c1) + ...
-                padImg(floor(r1)+2,floor(c1)+1)*weight_h3(floor(r1)-1,r1)*weight_h3(floor(c1)+0,c1) + ...
-                padImg(floor(r1)+2,floor(c1)+2)*weight_h3(floor(r1)-1,r1)*weight_h3(floor(c1)-1,c1));
-            endif
-        endfor
-    endfor
-endfunction
-
-function w = weight_h3(x,y)
-    d = abs(x-y);
-    if (d<=1)
-        w = 1 - 2*d^2 + d^3;
-    elseif (d>1 && d<2)
-        w = 4 - 8*d + 5*d^2 - d^3;
-    else
-        w = 0;
-    endif
-endfunction
+            end
+        end
+    end
+end
