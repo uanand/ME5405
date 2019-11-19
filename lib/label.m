@@ -1,4 +1,7 @@
 function [labelImg,numLabel] = label(bImg)
+% TODO
+% Bug in implementation.
+% Need to build equivalence classes and relabel based on the equivalence class. 
     [row,col] = size(bImg);
     labelImg = zeros(row,col,"int32");
     numLabel = 0;
@@ -32,20 +35,20 @@ function [labelImg,numLabel] = label(bImg)
                 elseif (r==row && c==col)
                     nearLabel = max([labelImg(r-1,c-1),labelImg(r-1,c),labelImg(r,c-1),labelImg(r,c)]);
                     allLabels = unique([labelImg(r-1,c-1),labelImg(r-1,c),labelImg(r,c-1),labelImg(r,c)]);
-                endif
+                end
                 if (nearLabel>0)
                     labelImg(r,c) = nearLabel;
                 else
                     numLabel = numLabel+1;
                     labelImg(r,c) = numLabel;
-                endif
-            endif
-        endfor
-    endfor
+                end
+            end
+        end
+    end
     
-    for r = 1:row
-        for c = 1:col
-            
-        endfor
-    endfor
-endfunction
+    %for r = 1:row
+        %for c = 1:col
+            %TODO
+        %end
+    %end
+end
