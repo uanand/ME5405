@@ -1,4 +1,19 @@
-function rotImg = imageRotate(img,theta,method='nearestNeighbor')
+function rotImg = imageRotate(img,theta,method)
+% imageRotate - Rotates the input image around its centre by theta degrees in counter clockwise direction.
+% 
+% Input parameters -
+%   img - 8-bit grayscale image for which you need to rotate
+%   theta - angle of rotation in degrees (counter clockwise)
+%   method - inerpolation method that you want to use. Options are 'nearestNeighbor', and 'bilinear'
+% 
+% Usage -
+% rotImg = imageRotate(img,40,'bilinear')
+%   Rotates the input image by 40 degrees in the counter clockwise direction using bilinear interpolation method.
+% rotImg = imageRotate(img,-90,'nearestNeighbor')
+%   Rotates the input image by 90 degrees in the clockwise direction using nearest neightbor interpolation method.
+%
+% Returns -
+%   Rotated image. The size of the rotated image is typically larger than the input image but it depends on the rotation angle.
     [row,col] = size(img);
     theta = theta*pi/180;
     
@@ -9,18 +24,18 @@ function rotImg = imageRotate(img,theta,method='nearestNeighbor')
             cRot = round(sin(theta)*double(r) + cos(theta)*double(c));
             if (rRot<rRotMin)
                 rRotMin = rRot;
-            endif
+            end
             if (rRot>rRotMax)
                 rRotMax = rRot;
-            endif
+            end
             if (cRot<cRotMin)
                 cRotMin = cRot;
-            endif
+            end
             if (cRot>cRotMax)
                 cRotMax = cRot;
-            endif
-        endfor
-    endfor
+            end
+        end
+    end
     
     rotImg = zeros(rRotMax-rRotMin+1,cRotMax-cRotMin+1,"uint8");
     if (strcmp(method,'nearestNeighbor'))
@@ -28,13 +43,7 @@ function rotImg = imageRotate(img,theta,method='nearestNeighbor')
     elseif (strcmp(method,'bilinear'))
         padImg = [img;img(row,:)];
         padImg = [padImg padImg(:,col)];
-    elseif (strcmp(method,'bicubic'))
-        padImg = img;
-        %padImg = [img;img(row,:);img(row-1,:)];
-        %padImg = [padImg padImg(:,col) padImg(:,col-1)];
-        %padImg = [padImg(2,:); padImg(1,:); padImg];
-        %padImg = [padImg(:,2) padImg(:,1) padImg];
-    endif
+    end
     for rRot = rRotMin:rRotMax
         for cRot = cRotMin:cRotMax
             r1 =  cos(theta)*double(rRot) + sin(theta)*double(cRot);
@@ -49,10 +58,8 @@ function rotImg = imageRotate(img,theta,method='nearestNeighbor')
                     padImg(floor_r1+0,floor_c1+1)*(floor(r1)+1-r1)*(c1-floor(c1)+0) + ...
                     padImg(floor_r1+1,floor_c1+0)*(r1-floor(r1)+0)*(floor(c1)+1-c1) + ...
                     padImg(floor_r1+1,floor_c1+1)*(r1-floor(r1)+0)*(c1-floor(c1)+0);
-                elseif (strcmp(method,'bicubic'))
-                    rotImg(rRot-rRotMin+1,cRot-cRotMin+1) = padImg(round(r1),round(c1));
-                endif
-            endif
-        endfor
-    endfor
-endfunction
+                end
+            end
+        end
+    end
+end
