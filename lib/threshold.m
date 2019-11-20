@@ -1,8 +1,8 @@
 function [bImg,th] = threshold(img,method,th)
     [row,col] = size(img);
-    bImg = zeros(row,col,"logical");
+    bImg = zeros(row,col,'logical');
     
-    if (strcmp(method,"constant"))
+    if (strcmp(method,'constant'))
         for r = 1:row;
             for c = 1:col;
                 if (img(r,c)>th)
@@ -10,7 +10,7 @@ function [bImg,th] = threshold(img,method,th)
                 end;
             end;
         end;
-    elseif (strcmp(method,"mean"))
+    elseif (strcmp(method,'mean'))
         th = 0;
         for r = 1:row;
             for c = 1:col;
@@ -25,7 +25,7 @@ function [bImg,th] = threshold(img,method,th)
                 end;
             end;
         end;
-    elseif (strcmp(method,"median"))
+    elseif (strcmp(method,'median'))
         vectorImg = reshape(img,1,row*col);
         th = median(vectorImg);
         for r = 1:row
@@ -35,9 +35,9 @@ function [bImg,th] = threshold(img,method,th)
                 end;
             end;
         end;
-    elseif (strcmp(method,"otsu"))
+    elseif (strcmp(method,'otsu'))
         classVariance = 1e10;
-        hist = histogram(img);
+        hist = histogram(img,0);
         for intensity = 0:255
             w1 = 0;
             m1 = 0;
@@ -78,9 +78,9 @@ function [bImg,th] = threshold(img,method,th)
                 end;
             end;
         end;
-    elseif (strcmp(method,"maxentropy"))
+    elseif (strcmp(method,'maxentropy'))
         entropy = -1e10;
-        prob = histogram(img,normalize=1);
+        prob = histogram(img,1);
         P_s = zeros(256);
         H_s = zeros(256);
         phi_s = zeros(256);

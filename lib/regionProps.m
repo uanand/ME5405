@@ -22,7 +22,7 @@ function props = regionProps(labelImg)
         for c = 1:col
             if (labelImg(r,c)>0)
                 label = labelImg(r,c);
-                props(label).Area++;
+                props(label).Area = props(label).Area+1;
                 if (props(label).BoundingBox(1)>r)
                     props(label).BoundingBox(1) = r;
                 end;

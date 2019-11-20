@@ -1,6 +1,6 @@
 clear;
 addpath('./lib');
-pkg load image
+% pkg load image
 
 % 1. READING AND PROCESSING BITMAP IMAGE
 img = imread('charact2.bmp');
@@ -10,8 +10,8 @@ imgStretch = stretchContrast(img);
 imshow(img); input('Press enter to continue');
 
 % 2. THRESHOLD THE IMAGE USING THE MEAN INTENSITY VALUE
-imgBlur_6 = imsmooth(img,'Gaussian',6);
-imgBlur_1 = imsmooth(img,'Gaussian',1);
+imgBlur_6 = imgaussfilt(img,6); %imsmooth(img,'Gaussian',6);
+imgBlur_1 = imgaussfilt(img,1); %imsmooth(img,'Gaussian',1);
 [bImg_6,th_6] = threshold(imgBlur_6,'otsu');
 [bImg_1_adaptive,th_1_adaptive] = thresholdAdaptive(imgBlur_1,'mean',45);
 bImg = and(bImg_6,bImg_1_adaptive);
@@ -45,7 +45,7 @@ end
 newImg_rot_90_a = zeros(row,col,'uint8');
 for label = 1:numLabel
     cropImg = img(props(label).BoundingBox(1):props(label).BoundingBox(2),props(label).BoundingBox(3):props(label).BoundingBox(4));
-    rotCropImg = imageRotate(cropImg,angle=-90,method='nearestNeighbor');
+    rotCropImg = imageRotate(cropImg,-90,'nearestNeighbor');
     [rowCrop,colCrop] = size(cropImg);
     [rowRotCrop,colRotCrop] = size(rotCropImg);
     startRow = int32(props(label).Centroid(1) - rowRotCrop/2);
@@ -58,7 +58,7 @@ imshow(newImg_rot_90_a); input('Press enter to continue');
 newImg_rot_90_b = zeros(row,int32(1.5*col),'uint8');
 for label = 1:numLabel
     cropImg = img(props(label).BoundingBox(1):props(label).BoundingBox(2),props(label).BoundingBox(3):props(label).BoundingBox(4));
-    rotCropImg = imageRotate(cropImg,angle=-90,method='nearestNeighbor');
+    rotCropImg = imageRotate(cropImg,-90,'nearestNeighbor');
     [rowCrop,colCrop] = size(cropImg);
     [rowRotCrop,colRotCrop] = size(rotCropImg);
     startRow = int32(props(label).Centroid(1) - rowRotCrop/2);
@@ -66,7 +66,7 @@ for label = 1:numLabel
     flag = 0;
     while(flag==0)
         if (length(unique(newImg_rot_90_b(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1))) > 1)
-            startCol += 50;
+            startCol = startCol+50;
         else
             newImg_rot_90_b(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1) = rotCropImg;
             flag = 1;
@@ -79,7 +79,7 @@ imshow(newImg_rot_90_b); input('Press enter to continue');
 newImg_rot35_a = zeros(row,col,'uint8');
 for label = 1:numLabel
     cropImg = img(props(label).BoundingBox(1):props(label).BoundingBox(2),props(label).BoundingBox(3):props(label).BoundingBox(4));
-    rotCropImg = imageRotate(cropImg,angle=35,method='nearestNeighbor');
+    rotCropImg = imageRotate(cropImg,35,'nearestNeighbor');
     [rowCrop,colCrop] = size(cropImg);
     [rowRotCrop,colRotCrop] = size(rotCropImg);
     startRow = int32(props(label).Centroid(1) - rowRotCrop/2);
@@ -92,7 +92,7 @@ imshow(newImg_rot35_a); input('Press enter to continue');
 newImg_rot35_b = zeros(row,int32(1.6*col),'uint8');
 for label = 1:numLabel
     cropImg = img(props(label).BoundingBox(1):props(label).BoundingBox(2),props(label).BoundingBox(3):props(label).BoundingBox(4));
-    rotCropImg = imageRotate(cropImg,angle=35,method='nearestNeighbor');
+    rotCropImg = imageRotate(cropImg,35,'nearestNeighbor');
     [rowCrop,colCrop] = size(cropImg);
     [rowRotCrop,colRotCrop] = size(rotCropImg);
     startRow = int32(props(label).Centroid(1) - rowRotCrop/2);
@@ -100,7 +100,7 @@ for label = 1:numLabel
     flag = 0;
     while(flag==0)
         if (length(unique(newImg_rot35_b(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1))) > 1)
-            startCol += 20;
+            startCol = startCol+20;
         else
             newImg_rot35_b(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1) = rotCropImg;
             flag = 1;

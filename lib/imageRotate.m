@@ -38,7 +38,7 @@ function rotImg = imageRotate(img,theta,method)
         end
     end
     
-    rotImg = zeros(rRotMax-rRotMin+1,cRotMax-cRotMin+1,"uint8");
+    rotImg = zeros(rRotMax-rRotMin+1,cRotMax-cRotMin+1,'uint8');
     if (strcmp(method,'nearestNeighbor'))
         padImg = img;
     elseif (strcmp(method,'bilinear'))

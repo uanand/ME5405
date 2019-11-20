@@ -18,8 +18,8 @@ function bImg2 = binaryMorphology(bImg,method,kernelSize)
 % Returns
 %   A new binary image after doing the morphological operations
     [row,col] = size(bImg);
-    bImg2 = zeros(row,col,"logical");
-    bImgTemp = zeros(row,col,"logical");
+    bImg2 = zeros(row,col,'logical');
+    bImgTemp = zeros(row,col,'logical');
     
     if (mod(kernelSize,2))
         if (strcmp(method,'erode'))

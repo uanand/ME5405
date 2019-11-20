@@ -17,7 +17,7 @@ function scaleImg = imageScale(img,targetRow,targetCol,method)
 % Returns -
 %   Scaled image. The size of the scaled image is defined by the targetRow and targetCol input parameters.
     [row,col] = size(img);
-    scaleImg = zeros(targetRow,targetCol,"uint8");
+    scaleImg = zeros(targetRow,targetCol,'uint8');
     
     scaleMat = [double(targetRow)/double(row),0;0,double(targetCol)/double(col)];
     invScaleMat = inv(scaleMat);

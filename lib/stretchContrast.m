@@ -26,7 +26,7 @@ function imgStretch = stretchContrast(img)
     
     alpha = 255.0/double(intensityMax-intensityMin);
     beta = -alpha*double(intensityMin);
-    imgStretch = zeros(row,col,"uint8");
+    imgStretch = zeros(row,col,'uint8');
     for r = 1:row
         for c = 1:col
             imgStretch(r,c) = round(alpha*double(img(r,c)) + beta);
