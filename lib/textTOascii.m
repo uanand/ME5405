@@ -11,7 +11,7 @@ function img = textTOascii(text)
 %   The function works well only for the specific text image in the project. It ignores the characters corresponding to new line and return key and makes an vector of all the other character by encoding them in the corresponding ASCII value. Finally this vector is reshaped into a 64x64 matrix.
 %
 % Returns -
-%   img - a 64x64 grayscale image with 255 allowed grayscale levels ranging from 0-255 
+%   img - a 64x64 grayscale image with 255 allowed grayscale levels ranging from 0-255
     [~,numElements] = size(text);
     listImg = [];
     for c = 1:numElements
