@@ -1,6 +1,6 @@
 clear;
 addpath('./lib');
-% pkg load image
+pkg load image
 
 % 1. READING AND PROCESSING BITMAP IMAGE
 img = imread('charact2.bmp');
@@ -10,8 +10,10 @@ imgStretch = stretchContrast(img);
 imshow(img); input('Press enter to continue');
 
 % 2. THRESHOLD THE IMAGE USING THE MEAN INTENSITY VALUE
-imgBlur_6 = imgaussfilt(img,6); %imsmooth(img,'Gaussian',6);
-imgBlur_1 = imgaussfilt(img,1); %imsmooth(img,'Gaussian',1);
+imgBlur_6 = imsmooth(img,'Gaussian',6); % USE IMSMOOTH IF USING OCTAVE
+imgBlur_1 = imsmooth(img,'Gaussian',1); % USE IMSMOOTH IF USING OCTAVE
+% imgBlur_6 = imgaussfilt(img,6); % USE IMGAUSSFILT IF USING MATLAB
+% imgBlur_1 = imgaussfilt(img,1); % USE IMGAUSSFILT IF USING MATLAB
 [bImg_6,th_6] = threshold(imgBlur_6,'otsu');
 [bImg_1_adaptive,th_1_adaptive] = thresholdAdaptive(imgBlur_1,'mean',45);
 bImg = and(bImg_6,bImg_1_adaptive);
