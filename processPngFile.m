@@ -1,19 +1,19 @@
 clear;
 addpath('./lib');
-pkg load image
+% pkg load image
 
 % 1. READING AND PROCESSING BITMAP IMAGE
 img = imread('charact2.bmp');
 img = img(:,:,1);
 imgStretch = stretchContrast(img);
 [row,col] = size(img);
-imshow(img); input('Press enter to continue');
+imshow(img); title('Raw image'); input('Press enter to continue');
 
 % 2. THRESHOLD THE IMAGE USING THE MEAN INTENSITY VALUE
-imgBlur_6 = imsmooth(img,'Gaussian',6); % USE IMSMOOTH IF USING OCTAVE
-imgBlur_1 = imsmooth(img,'Gaussian',1); % USE IMSMOOTH IF USING OCTAVE
-% imgBlur_6 = imgaussfilt(img,6); % USE IMGAUSSFILT IF USING MATLAB
-% imgBlur_1 = imgaussfilt(img,1); % USE IMGAUSSFILT IF USING MATLAB
+% imgBlur_6 = imsmooth(img,'Gaussian',6); % USE IMSMOOTH IF USING OCTAVE
+% imgBlur_1 = imsmooth(img,'Gaussian',1); % USE IMSMOOTH IF USING OCTAVE
+imgBlur_6 = imgaussfilt(img,6); % USE IMGAUSSFILT IF USING MATLAB
+imgBlur_1 = imgaussfilt(img,1); % USE IMGAUSSFILT IF USING MATLAB
 [bImg_6,th_6] = threshold(imgBlur_6,'otsu');
 [bImg_1_adaptive,th_1_adaptive] = thresholdAdaptive(imgBlur_1,'mean',45);
 bImg = and(bImg_6,bImg_1_adaptive);
@@ -33,14 +33,14 @@ for label = 1:numLabel
         bImg(props(label).BoundingBox(1):props(label).BoundingBox(2),props(label).Centroid(2)-1:props(label).Centroid(2)+1) = 0;
     end
 end
-imshow(bImg); input('Press enter to continue');
+imshow(bImg); title('Segmented binary image'); input('Press enter to continue');
 
 % 3. SEGMENT ALL THE PARTICLES FORM ORIGINAL IMAGE
 [labelImg,numLabel] = bwlabel(bImg,8);
 props = regionProps(labelImg);
 for label = 1:numLabel
     cropImg = img(props(label).BoundingBox(1):props(label).BoundingBox(2),props(label).BoundingBox(3):props(label).BoundingBox(4));
-    imshow(cropImg); input('Press enter to continue');
+    imshow(cropImg); title('Individual characters'); input('Press enter to continue');
 end
 
 % 4a. ROTATE THE CHARACTERS ABOUT THEIR CENTER BY -90 DEGREES
@@ -54,7 +54,7 @@ for label = 1:numLabel
     startCol = int32(props(label).Centroid(2) - colRotCrop/2);
     newImg_rot_90_a(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1) = rotCropImg;
 end
-imshow(newImg_rot_90_a); input('Press enter to continue');
+imshow(newImg_rot_90_a); title('Rotation by -90 degrees'); input('Press enter to continue');
 
 % 4b. ROTATE THE CHARACTERS ABOUT THEIR CENTER BY -90 DEGREES AND PLACE THE OBJECT SO THAT THEY DO NOT OVERLAP ON ONE ANOTHER
 newImg_rot_90_b = zeros(row,int32(1.5*col),'uint8');
@@ -75,7 +75,7 @@ for label = 1:numLabel
         end
     end
 end
-imshow(newImg_rot_90_b); input('Press enter to continue');
+imshow(newImg_rot_90_b); title('Rotation by -90 degrees'); input('Press enter to continue');
 
 % 5a. ROTATE THE CHARACTERS ABOUT THEIR CENTER BY 35 DEGREES
 newImg_rot35_a = zeros(row,col,'uint8');
@@ -88,7 +88,7 @@ for label = 1:numLabel
     startCol = int32(props(label).Centroid(2) - colRotCrop/2);
     newImg_rot35_a(startRow:startRow+rowRotCrop-1,startCol:startCol+colRotCrop-1) = rotCropImg;
 end
-imshow(newImg_rot35_a); input('Press enter to continue');
+imshow(newImg_rot35_a); title('Rotation by 35 degrees'); input('Press enter to continue');
 
 % 5b. ROTATE THE CHARACTERS ABOUT THEIR CENTER BY 35 DEGREES AND PLACE THE OBJECT SO THAT THEY DO NOT OVERLAP ON ONE ANOTHER
 newImg_rot35_b = zeros(row,int32(1.6*col),'uint8');
@@ -109,15 +109,15 @@ for label = 1:numLabel
         end
     end
 end
-imshow(newImg_rot35_b); input('Press enter to continue');
+imshow(newImg_rot35_b); title('Rotation by 35 degrees'); input('Press enter to continue');
 
 % 6. FIND THE OUTLINE OF SEGMENTED CHARACTERS
 bImgBdry = boundary(bImg);
-imshow(bImgBdry); input('Press enter to continue');
+imshow(bImgBdry); title('Boundary'); input('Press enter to continue');
 
 % 7. FIND THE SKELETON OF SEGMENTED CHARACTERS
 bImgSkeleton = skeleton(bImg);
-imshow(bImgSkeleton); input('Press enter to continue');
+imshow(bImgSkeleton); title('Skeleton'); input('Press enter to continue');
 
 % 8. SCALE AND DISPLAY CHARACTERS 7M2HD44780A00 IN SEQUENCE
 targetRow = 0;
@@ -133,7 +133,7 @@ for label = {4,7,8,1,2,3,5,6,9,10,11,12,13}
     cropImgScale = imageScale(cropImg,targetRow,targetCol,'bilinear');
     finalImg = [finalImg cropImgScale];
 end
-imshow(finalImg); input('Press enter to continue');
+imshow(finalImg); title('Collated image'); input('Press enter to continue');
 
 subplot(2,4,1), imshow(img)
 subplot(2,4,2), imshow(imgStretch)
