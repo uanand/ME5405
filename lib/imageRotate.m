@@ -1,5 +1,6 @@
 function rotImg = imageRotate(img,theta,method)
-% imageRotate - Rotates the input image around its centre by theta degrees in counter clockwise direction.
+% imageRotate -
+%   Rotates the input image around its centre by theta degrees in counter clockwise direction.
 % 
 % Input parameters -
 %   img - 8-bit grayscale image for which you need to rotate

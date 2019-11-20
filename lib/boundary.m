@@ -1,5 +1,6 @@
 function bImgBdry = boundary(bImg)
-% bImgBdry - Finds out the boundary of each object in a binary image.
+% bImgBdry -
+%   Finds out the boundary of each object in a binary image.
 % 
 % Input parameters -
 %   bImg - binary image for which you need to find the boundary of the components

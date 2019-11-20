@@ -1,5 +1,6 @@
 function scaleImg = imageScale(img,targetRow,targetCol,method)
-% imageScale - scale up or down the image by increasing or decreasing the number of rows and columns in the image.
+% imageScale -
+%   scale up or down the image by increasing or decreasing the number of rows and columns in the image.
 % 
 % Input parameters -
 %   img - 8-bit grayscale image which you need to scale up or down

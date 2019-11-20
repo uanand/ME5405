@@ -1,4 +1,4 @@
-function [bImg,th] = threshold(img,method="mean",th=0)
+function [bImg,th] = threshold(img,method,th)
     [row,col] = size(img);
     bImg = zeros(row,col,"logical");
     
@@ -7,24 +7,24 @@ function [bImg,th] = threshold(img,method="mean",th=0)
             for c = 1:col;
                 if (img(r,c)>th)
                     bImg(r,c) = 1;
-                endif;
-            endfor;
-        endfor;
+                end;
+            end;
+        end;
     elseif (strcmp(method,"mean"))
         th = 0;
         for r = 1:row;
             for c = 1:col;
                 th = th+double(img(r,c));
-            endfor
-        endfor
+            end
+        end
         th = double(th/(row*col));
         for r = 1:row;
             for c = 1:col;
                 if (img(r,c)>th)
                     bImg(r,c) = 1;
-                endif;
-            endfor;
-        endfor;
+                end;
+            end;
+        end;
     elseif (strcmp(method,"median"))
         vectorImg = reshape(img,1,row*col);
         th = median(vectorImg);
@@ -32,9 +32,9 @@ function [bImg,th] = threshold(img,method="mean",th=0)
             for c = 1:col
                 if (img(r,c)>th)
                     bImg(r,c) = 1;
-                endif;
-            endfor;
-        endfor;
+                end;
+            end;
+        end;
     elseif (strcmp(method,"otsu"))
         classVariance = 1e10;
         hist = histogram(img);
@@ -49,12 +49,12 @@ function [bImg,th] = threshold(img,method="mean",th=0)
                 w1 = w1 + hist(i1+1);
                 m1 = m1 + i1*hist(i1+1);
                 m1_2 = m1_2 + i1^2*hist(i1+1);
-            endfor
+            end
             for i2 = intensity+1:255
                 w2 = w2 + hist(i2+1);
                 m2 = m2 + i2*hist(i2+1);
                 m2_2 = m2_2 + i2^2*hist(i2+1);
-            endfor
+            end
             if (w1>0 && w2>0)
                 m1 = m1/w1;
                 m1_2 = m1_2/w1;
@@ -68,16 +68,16 @@ function [bImg,th] = threshold(img,method="mean",th=0)
                 if (variance<classVariance)
                     classVariance = variance;
                     th = intensity;
-                endif
-            endif
-        endfor
+                end
+            end
+        end
         for r = 1:row
             for c = 1:col
                 if (img(r,c)>th)
                     bImg(r,c) = 1;
-                endif;
-            endfor;
-        endfor;
+                end;
+            end;
+        end;
     elseif (strcmp(method,"maxentropy"))
         entropy = -1e10;
         prob = histogram(img,normalize=1);
@@ -88,31 +88,31 @@ function [bImg,th] = threshold(img,method="mean",th=0)
         for s = 0:255
             if (prob(s+1)>0)
                 H_n = H_n-prob(s+1)*log(prob(s+1));
-            endif
-        endfor
+            end
+        end
         for s = 0:255
             for i = 0:s
                 if (prob(i+1)>0)
                     P_s(s+1) = P_s(s+1)+prob(i+1);
                     H_s(s+1) = H_s(s+1)-prob(i+1)*log(prob(i+1));
-                endif
-            endfor
+                end
+            end
             if (P_s(s+1)>0 && P_s(s+1)<1)
                 phi_s = log(P_s(s+1)*(1-P_s(s+1))) + H_s(s+1)/P_s(s+1) + (H_n-H_s(s+1))/(1-P_s(s+1));
                 if (phi_s>entropy)
                     th = s;
                     entropy = phi_s;
-                endif
-            endif
-        endfor
+                end
+            end
+        end
         for r = 1:row
             for c = 1:col
                 if (img(r,c)>th)
                     bImg(r,c) = 1;
-                endif;
-            endfor;
-        endfor;
+                end;
+            end;
+        end;
     else
         printf("The method you entered is not valid. Please choose 1 of the following - constant, mean, median, otsu, maxentropy\n")
-    endif
-endfunction
+    end
+end

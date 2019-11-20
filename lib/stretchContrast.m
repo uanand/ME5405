@@ -1,5 +1,6 @@
 function imgStretch = stretchContrast(img)
-% stretchContrast - enhance the image by stretching the grayscale intensity values linearly between 0 and 255.
+% stretchContrast -
+%   enhance the image by stretching the grayscale intensity values linearly between 0 and 255.
 % 
 % Input parameters -
 %   img - 8-bit grayscale image for which you wish to do contrast stretching

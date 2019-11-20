@@ -1,4 +1,4 @@
-function [bImg,th] = thresholdAdaptive(img,method="mean",kernelSize=3)
+function [bImg,th] = thresholdAdaptive(img,method,kernelSize)
     [row,col] = size(img);
     bImg = zeros(row,col,"logical");
     th = zeros(row,col);
@@ -11,10 +11,10 @@ function [bImg,th] = thresholdAdaptive(img,method="mean",kernelSize=3)
                 th(r,c) = mean(cropImg);
                 if (img(r,c)>th(r,c))
                     bImg(r,c) = 1;
-                endif
-            endfor
-        endfor
+                end
+            end
+        end
     else
         printf("Value of kernelSize should be an odd number\n")
-    endif
-endfunction
+    end
+end

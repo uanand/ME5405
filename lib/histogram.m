@@ -1,5 +1,6 @@
 function count = histogram(img,normalize)
-% histogram - Calculates the histogram of the grayscale image.
+% histogram -
+%   Calculates the histogram of the grayscale image.
 % 
 % Input parameters -
 %   img - 8-bit grayscale image for which you need to find the histogram

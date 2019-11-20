@@ -1,5 +1,6 @@
 function [imgEq,histEq] = histogramEqualize(img)
-% histogramEqualize - Enhances the contrast of the image using histogram equalization method discussed in the lecture notes.
+% histogramEqualize -
+%   Enhances the contrast of the image using histogram equalization method discussed in the lecture notes.
 % 
 % Input parameters -
 %   img - 8-bit grayscale image for which you need to histogram equalization

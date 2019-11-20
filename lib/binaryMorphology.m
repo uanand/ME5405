@@ -1,5 +1,6 @@
 function bImg2 = binaryMorphology(bImg,method,kernelSize)
-% binaryMorphology - Perform simple morphological operation on binary images.
+% binaryMorphology -
+%   Perform simple morphological operation on binary images.
 % 
 % Input parameters -
 %   bImg - binary image on which the operation needs to be performed
