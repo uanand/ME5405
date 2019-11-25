@@ -22,7 +22,7 @@ function [imgEq,histEq] = histogramEqualize(img)
         for j = 1:i;
             totalCount = totalCount + hist(j);
         end
-        histCum(i+1) = totalCount;
+        histCum(i) = totalCount;
     end
     for r = 1:row;
         for c = 1:col;
