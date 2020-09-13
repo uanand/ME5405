@@ -1,4 +1,21 @@
 function [bImg,th] = threshold(img,method,th)
+% threshold -
+%   peform global thresholding for the image. All the intensity values above the threshold are labelled True and the ones below it are labelled False.
+% 
+% Input parameters -
+%   img - 8-bit grayscale image which has to be thresholded
+%   method - Select one of 'constant', 'mean', 'median', 'otsu', 'maxentropy'. The selected threshold method will be applied.
+%   th - Valid for 'constant' method. Enter the manual threshold you want to set.
+% 
+% Usage -
+% [bImg,th] = threshold(img,'mean');
+%   The average intensity value in the whole image is calculated. All the pixels with intensity value greater than the average are marked as True, and marked False otherwise.
+% [bImg,th] = threshold(img,'constant',56);
+%   'constant' intensity threshold mode is selected. All the pixels with intensity value greater than 56 are marked as True, and marked False otherwise.
+%
+% Returns -
+%   bImg. Binary image after performing global thresholding.
+%   th. Calculated threshold.
     [row,col] = size(img);
     bImg = zeros(row,col,'logical');
     
